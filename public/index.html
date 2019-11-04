@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Twitter Stream API</title>
+    <meta name="description" content="Twitter Stream API Example">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- import the webpage's stylesheet -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="row">
+          <h3>Twitter Stream API Example</h3>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-twitter"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Received Tweets</span>
+                <span class="info-box-number" id="total_tweets">0</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-clock-o"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Tweets/sec</span>
+                <span class="info-box-number" id="tweets_per_sec">0</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-clock-o"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Tweets/min</span>
+                <span class="info-box-number" id="tweets_per_min">0</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-clock-o"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Tweets/hr</span>
+                <span class="info-box-number" id="tweets_per_hr">0</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-yellow"><i class="fa fa-link"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Tweets with URL</span>
+                <span class="info-box-number" id="tweets_url">0%</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-yellow"><i class="fa fa-photo"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Tweets with Photo</span>
+                <span class="info-box-number" id="tweets_photo">0%</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-yellow"><i class="fa fa-heart"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Tweets with Emoji</span>
+                <span class="info-box-number" id="tweets_emoji">0%</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="box box-widget widget-user-2">
+              <div class="widget-user-header bg-green">
+                <h3 class="widget-user-username"><i class="fa fa-external-link"></i>  Top Domains</h3>
+              </div>
+              <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                  <li><div id="domain-0"></div></li>
+                  <li><div id="domain-1"></div></li>
+                  <li><div id="domain-2"></div></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="box box-widget widget-user-2">
+              <div class="widget-user-header bg-green">
+                <h3 class="widget-user-username"><i class="fa fa-thumbs-up"></i>  Top Hashtags</h3>
+              </div>
+              <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                  <li><div id="hashtag-0"></div></li>
+                  <li><div id="hashtag-1"></div></li>
+                  <li><div id="hashtag-2"></div></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="box box-widget widget-user-2">
+              <div class="widget-user-header bg-green">
+                <h3 class="widget-user-username"><i class="fa fa-smile-o"></i>  Top Emojis</h3>
+              </div>
+              <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                  <li><div id="emoji-0"></div></li>
+                  <li><div id="emoji-1"></div></li>
+                  <li><div id="emoji-2"></div></li>
+                </ul>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/adminlte.min.js"></script>
+    <script>
+        var socket = io("http://localhost:3000");
+        var tweetArray = [];
+        var index = 0;
+        socket.on('connect',function(data){
+            console.log('connected');
+        })
+        socket.on("status", function(stat){
+            if(stat.tweets_per_sec > 0)
+            {
+              $("#tweets_per_sec").html((stat.tweets_per_sec).toFixed(2));
+              $("#tweets_per_min").html((stat.tweets_per_sec*60).toFixed(2));
+              $("#tweets_per_hr").html((stat.tweets_per_sec*3600).toFixed(2));
+            }
+            
+            $("#total_tweets").html(stat.total_tweets);
+            for( idx in stat.top_hashtag) {
+              var str = stat.top_hashtag[idx].tag + "<span class='pull-right badge bg-blue'>" + stat.top_hashtag[idx].value + "</span>";
+              $("#hashtag-" + idx).html(str);
+            }
+
+            for(idx in stat.tweets_domain) {
+              var str = stat.tweets_domain[idx].domain + "<span class='pull-right badge bg-blue'>" + stat.tweets_domain[idx].value + "</span>";
+              $("#domain-" + idx).html(str);
+            }
+
+            for(idx in stat.top_emojis) {
+              var str = stat.top_emojis[idx].emoji + "<span class='pull-right badge bg-blue'>" + stat.top_emojis[idx].value + "</span>";
+              $("#emoji-" + idx).html(str);
+            }
+
+            var str = "";
+
+            str = ((stat.tweets_url / stat.total_tweets)*100).toFixed(2) + "%";
+            $("#tweets_url").html(str);
+
+            str = ((stat.tweets_photo / stat.total_tweets)*100).toFixed(2) + "%";
+            $("#tweets_photo").html(str);
+
+            str = ((stat.tweets_emoji / stat.total_tweets)*100).toFixed(2) + "%";
+            $("#tweets_emoji").html(str);
+        });
+    </script>
+  </body>
+</html>
