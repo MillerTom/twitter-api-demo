@@ -1,22 +1,23 @@
-# Twitterstream
-Tweet wall for specific hash tag made using Twitter streaming API
+# Twitter Stream Demo
+Tweet streaming demo using Twitter streaming API
 
 1. Clone the project 
 
 2. <code>npm install</code>
 
-3. open <code>index.js</code>
+3. Create `.env` file and open it.
 
-4. Place your access tokens and keys here
+4. Copy your Twitter app keys from developer account.
 
+Once you've create new developer account and made an app, you can see the **Keys and Tokens**, copy the api keys like below.
 ```
-  var T = new Twit({
-    consumer_key:         '',
-    consumer_secret:      '',
-    access_token:         '',
-    access_token_secret:  '',
-    timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
-  });
+CONSUMER_KEY=<Consumer Key>
+CONSUMER_SECRET=<Consumer Secret>
+ACCESS_TOKEN=<Access Token>
+ACCESS_TOKEN_SECRET=<Acess Token Secret>
 ```
 
 5. <code> node index.js </code>
+
+6. Open `public/index.html`
+
