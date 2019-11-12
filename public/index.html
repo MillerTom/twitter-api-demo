@@ -147,13 +147,20 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="js/adminlte.min.js"></script>
     <script>
+
+        // connect to websocket
         var socket = io("http://localhost:3000");
         var tweetArray = [];
         var index = 0;
+
         socket.on('connect',function(data){
             console.log('connected');
         })
+
+        // get status from websocket server
         socket.on("status", function(stat){
+
+            // get and calc tweets speed
             if(stat.tweets_per_sec > 0)
             {
               $("#tweets_per_sec").html((stat.tweets_per_sec).toFixed(2));
@@ -162,16 +169,20 @@
             }
             
             $("#total_tweets").html(stat.total_tweets);
+
+            // display top hashtags
             for( idx in stat.top_hashtag) {
               var str = stat.top_hashtag[idx].tag + "<span class='pull-right badge bg-blue'>" + stat.top_hashtag[idx].value + "</span>";
               $("#hashtag-" + idx).html(str);
             }
 
+            // display top domains
             for(idx in stat.tweets_domain) {
               var str = stat.tweets_domain[idx].domain + "<span class='pull-right badge bg-blue'>" + stat.tweets_domain[idx].value + "</span>";
               $("#domain-" + idx).html(str);
             }
 
+            // display top emojis
             for(idx in stat.top_emojis) {
               var str = stat.top_emojis[idx].emoji + "<span class='pull-right badge bg-blue'>" + stat.top_emojis[idx].value + "</span>";
               $("#emoji-" + idx).html(str);
@@ -179,6 +190,7 @@
 
             var str = "";
 
+            // calc all percentage
             str = ((stat.tweets_url / stat.total_tweets)*100).toFixed(2) + "%";
             $("#tweets_url").html(str);
 
